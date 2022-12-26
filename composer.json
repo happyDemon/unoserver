@@ -1,0 +1,44 @@
+{
+    "name": "happydemon/unoserver",
+    "description": "Laravel wrapper to interact with UnoServer, which allows you to convert documents using LibreOffice.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maxim Kerstens",
+            "email": "maxim.kerstens@gmail.com",
+            "homepage": "https://github.com/happyDemon"
+        }
+    ],
+    "homepage": "https://github.com/happydemon/unoserver",
+    "keywords": ["Laravel", "UnoServer", "unoconvert", "libreoffice", "openoffice"],
+    "require": {
+        "php": "7.4|~8",
+        "illuminate/support": "~7|~8|~9",
+        "touhidurabir/laravel-stub-generator": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~7",
+        "nunomaduro/collision": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "HappyDemon\\UnoServer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "HappyDemon\\UnoServer\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "HappyDemon\\UnoServer\\UnoServerServiceProvider"
+            ],
+            "aliases": {
+                "UnoServer": "HappyDemon\\UnoServer\\Facades\\UnoServer"
+            }
+        }
+    }
+}
