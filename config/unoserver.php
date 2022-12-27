@@ -18,8 +18,7 @@ return [
         // Only required for generating the unoserver wrapper script
         'libreoffice' => env('UNSORSERVER_EXEC_LIBRE'),
 
-        // These 2 don't have to be set
-        'unoserver' => env('UNSORSERVER_EXEC_SERVER'),
-        'unoconvert' => env('UNSORSERVER_EXEC_CONVERT'),
+        // Python exec that installed the unoserver dependency
+        'python' => env('UNSORSERVER_EXEC_PYTHON'),
     ],
 ];

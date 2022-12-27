@@ -17,7 +17,7 @@ class UnoServerFactory
      * @return UnoServer|null
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
-    public function connection(?string $connectionName = null): ?UnoServer
+    public function connect(?string $connectionName = null): ?UnoServer
     {
         $config = config('unoserver.servers.' . $connectionName ?: config('unoserver.default_server'));
 

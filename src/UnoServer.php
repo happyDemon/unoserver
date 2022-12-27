@@ -31,7 +31,8 @@ class UnoServer
      * @param bool $onSuccessDeleteSourceFile
      *
      * @return $this
-     */public function document(string $pathToDocumentFile, bool $onSuccessDeleteSourceFile = false): self
+     */
+    public function fromDocument(string $pathToDocumentFile, bool $onSuccessDeleteSourceFile = false): self
     {
         $this->sourceFile = new Document($pathToDocumentFile, $onSuccessDeleteSourceFile);
 
@@ -46,7 +47,7 @@ class UnoServer
      *
      * @return $this
      */
-    public function spreadsheet(string $pathToDocumentFile, bool $onSuccessDeleteSourceFile = false): self
+    public function fromSpreadsheet(string $pathToDocumentFile, bool $onSuccessDeleteSourceFile = false): self
     {
         $this->sourceFile = new Spreadsheet($pathToDocumentFile, $onSuccessDeleteSourceFile);
 
@@ -80,7 +81,6 @@ class UnoServer
      */
     public function convert(): UploadedFile
     {
-        return $this->connection->withSourceFile($this->sourceFile)
-            ->convert($this->format ?: 'pdf');
+        return $this->sourceFile->convert($this->connection,$this->format ?: 'pdf');
     }
 }

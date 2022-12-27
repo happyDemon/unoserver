@@ -24,8 +24,18 @@ abstract class Connection
         return $this;
     }
 
+    /**
+     * Define which config keys are required for this connection to work.
+     * @return array
+     */
     abstract public function configKeys(): array;
 
+    /**
+     * Configure this connection object based on the provided data.
+     * @param array $config
+     *
+     * @return $this
+     */
     abstract public function configure(array $config): self;
 
     /**
@@ -38,48 +48,4 @@ abstract class Connection
      * @return Process
      */
     abstract public function toProcess(string $format, string $document, string $outputPath): Process;
-
-    /**
-     * @param string $format
-     *
-     * @return UploadedFile
-     * @throws ProcessFailedException
-     */
-    public function convert(string $format): UploadedFile
-    {
-        // Create a tmp file where the convert command can write to
-        $tempFile = tmpfile();
-        $tempFilePath = stream_get_meta_data($tempFile)['uri'];
-
-        // Make sure the temp file is deleted
-        app()->terminating(function () use ($tempFile) {
-            fclose($tempFile);
-        });
-
-        // Runs the conversion command
-        try {
-            $this->toProcess($format, $this->sourceFile->path(), $tempFilePath)
-                ->setTimeout(30)
-                ->mustRun();
-        }
-        catch (ProcessFailedException $processFailedException) {
-            dd($processFailedException);
-        }
-
-
-        // Delete the source file, if needed
-        if ($this->sourceFile->deletable()) {
-            unlink($this->sourceFile->path());
-        }
-
-        $tempFileObject = new File($tempFilePath);
-
-        return new UploadedFile(
-            $tempFileObject->getPathname(),
-            $tempFileObject->getFilename(),
-            $tempFileObject->getMimeType(),
-            0,
-            true
-        );
-    }
 }

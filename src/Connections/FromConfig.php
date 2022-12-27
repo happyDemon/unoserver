@@ -30,7 +30,9 @@ class FromConfig extends Connection
     {
         return Process::fromShellCommandline(
             implode(' ', [
-                config('unoserver.executables.unoconvert') ?: (new ExecutableFinder())->find('unoconvert'),
+                config('unoserver.executables.python') ?: (new ExecutableFinder())->find('python'),
+                '-m',
+                'unoserver.converter',
                 '--interface',
                 $this->interface,
                 '--port',

@@ -60,6 +60,14 @@ class UnoServerServiceProvider extends ServiceProvider
             ['unoserver', 'unoserver.config', 'config']
         );
 
+        $this->publishes(
+            [
+                __DIR__ . '/../bin/install-mac' => base_path('bin/install-mac'),
+                __DIR__ . '/../bin/install-ubuntu' => base_path('bin/install-ubuntu'),
+            ],
+            ['unoserver', 'unoserver.bin', 'bin']
+        );
+
         // Registering package commands.
         $this->commands([
             UnoServerGenerateCommand::class,

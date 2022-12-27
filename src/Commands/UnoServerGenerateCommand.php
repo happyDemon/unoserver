@@ -13,7 +13,7 @@ class UnoServerGenerateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'unoserver:helpers
+    protected $signature = 'make:unoserver-cmd
         {server? : server from the config file}
         {--ip=127.0.0.1}
         {--port=2002}
@@ -58,8 +58,6 @@ class UnoServerGenerateCommand extends Command
         $vendorDir = base_path('vendor/happydemon/unoserver');
 
         if ($installable['unoserver']) {
-            $server = config('unoserver.executables.unoserver') ?: (new ExecutableFinder())->find('unoserver');
-
             $this->clearExistingScript($scriptPath . '/unoserver' . $suffix);
 
             StubGenerator::from($vendorDir . '/stubs/unoserver.stub', true)
@@ -67,7 +65,7 @@ class UnoServerGenerateCommand extends Command
                 ->as('unoserver' . $suffix)
                 ->noExt()
                 ->withReplacers([
-                    'unoserver' => $server,
+                    'python' => config('unoserver.executables.python') ?: (new ExecutableFinder())->find('python'),
                     'executable' => config('unoserver.executables.libreoffice'),
                     'server' => $this->option('ip') ?: config($configPath . '.interface', '127.0.0.1'),
                     'port' => $this->option('port') ?: config($configPath . '.port', 2002),
@@ -80,8 +78,6 @@ class UnoServerGenerateCommand extends Command
         }
 
         if ($installable['unoconvert']) {
-            $convertor = config('unoserver.executables.unoconvert') ?: (new ExecutableFinder())->find('unoconvert');
-
             $this->clearExistingScript($scriptPath . '/unoconvert' . $suffix);
 
             StubGenerator::from($vendorDir . '/stubs/unoconvert.stub', true)
@@ -89,7 +85,7 @@ class UnoServerGenerateCommand extends Command
                 ->as('unoconvert' . $suffix)
                 ->noExt()
                 ->withReplacers([
-                    'unoconvert' => $convertor,
+                    'python' => config('unoserver.executables.python') ?: (new ExecutableFinder())->find('python'),
                     'server' => $this->option('ip') ?: config($configPath . '.interface', '127.0.0.1'),
                     'port' => $this->option('port') ?: config($configPath . '.port', 2002),
                 ])

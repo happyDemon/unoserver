@@ -1,0 +1,32 @@
+#! /bin/bash
+
+if [ ! -d "/Applications/LibreOffice.app" ]
+then
+    echo "Installing libreoffice \n"
+
+    # Make sure LibreOffice is installed
+    brew list libreoffice || brew install libreoffice
+    brew list libreoffice-language-pack || brew install libreoffice-language-pack
+fi
+
+# find_uno.py will list all python versions that can use libreoffice.
+wget -O find_uno.py https://gist.githubusercontent.com/regebro/036da022dc7d5241a0ee97efdf1458eb/raw/find_uno.py
+PYTHON_EXECUTABLES=`python3 find_uno.py`
+
+# Loop over every response line, we will install unoserver on every python executable
+while IFS= read -r line; do
+    # For every line that start as a path
+    if  [[ $line == /* ]] ;
+    then
+        echo "\n Installing unoserver on - ${line} \n"
+        $line -m pip install unoserver
+    fi
+done <<< "$(echo -e "$PYTHON_EXECUTABLES")"
+
+# The last line we'll use to configure the python executable path
+PYTHON_CLIENT="${PYTHON_EXECUTABLES##*$'\n'}"
+
+# Register paths in the .env file
+echo "\n Registering executable paths in your .env file \n"
+echo "UNSORSERVER_EXEC_LIBRE=/Applications/LibreOffice.app/Contents/MacOS/soffice" >> .env
+echo "UNSORSERVER_EXEC_PYTHON=${PYTHON_CLIENT}" >> .env
