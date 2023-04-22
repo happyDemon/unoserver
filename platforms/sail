@@ -1,0 +1,35 @@
+#! /bin/bash
+
+# Install libre office, if not already present
+if [ $(dpkg-query -W -f='${Status}' libreoffice 2>/dev/null | grep -c "ok installed") -eq 0 ];
+then
+    echo "Installing libreoffice \n"
+    sudo apt install python-software-properties
+    sudo add-apt-repository ppa:libreoffice/ppa
+    sudo apt update
+    sudo apt install libreoffice
+fi
+LIBREOFFICE_CLIENT=`which libreoffice`
+
+# find_uno.py will list all python versions that can use libreoffice.
+wget -O find_uno.py https://gist.githubusercontent.com/regebro/036da022dc7d5241a0ee97efdf1458eb/raw/find_uno.py
+PYTHON_EXECUTABLES=`python3 find_uno.py`
+
+# Loop over every response line, we will install unoserver on every python executable
+while IFS= read -r line; do
+    # For every line that start as a path
+    if  [[ $line == /* ]] ;
+    then
+        echo "\n Installing unoserver on - ${line} \n"
+        $line -m pip install unoserver
+    fi
+done <<< "$(echo -e "$PYTHON_EXECUTABLES")"
+
+# The last line we'll use to configure the python executable path
+PYTHON_CLIENT="${PYTHON_EXECUTABLES##*$'\n'}"
+
+# Register paths in the .env file
+echo "\n Register the following executable paths in your .env file \n"
+echo "echo \"UNSORSERVER_EXEC_LIBRE=${LIBREOFFICE_CLIENT}\" >> .env \n"
+echo "echo \"UNSORSERVER_EXEC_PYTHON=${PYTHON_CLIENT}\" >> .env"
+

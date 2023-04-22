@@ -62,10 +62,11 @@ class UnoServerServiceProvider extends ServiceProvider
 
         $this->publishes(
             [
-                __DIR__ . '/../bin/install-mac' => base_path('bin/install-mac'),
-                __DIR__ . '/../bin/install-ubuntu' => base_path('bin/install-ubuntu'),
+                __DIR__ . '/../platforms/mac' => base_path('platforms/mac'),
+                __DIR__ . '/../platforms/ubuntu' => base_path('platforms/ubuntu'),
+                __DIR__ . '/../platforms/sail' => base_path('platforms/sail'),
             ],
-            ['unoserver', 'unoserver.bin', 'bin']
+            ['unoserver', 'unoserver.platforms', 'platforms']
         );
 
         // Registering package commands.

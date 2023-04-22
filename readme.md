@@ -13,8 +13,17 @@ Install the package in your project:
 
 ``` bash
 composer require happydemon/unoserver && \
-php artisan vendor:publish --tag=unoserver
 ```
+
+#### Vendor publish
+
+You can run `vendor:publish --tag=unoserver` te publish the config file and the platform installers.
+
+You can also be more specific in what you want to publish:
+
+- `vendor:publish --tag=unoserver.config`
+- `vendor:publish --tag=unoserver.platforms`
+
 
 ### Set up
 
@@ -23,13 +32,17 @@ To get started quickly we bundled install scripts, these got exported thanks to 
 From your application's root directory you can run:
 
 ```shell
-sh bin/install-mac
-sh bin/install-ubuntu
+sh platforms/mac
+sh platforms/ubuntu
 ```
 
 For Mac it's important `homebrew` is installed, for Ubuntu `python3`
 
 The script will install LibreOffice, unoserver & set up some `.env` variables.
+
+### Sail
+
+
 
 ### Configuration
 
